@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#082550">
+  <meta name="description" content="An interactive design exploration for Florida Education Data Voices. Fictional scenario only; not Listening Tour findings.">
+  <title>One question, many perspectives | Florida Education Data Voices — Design prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:#082550; --blue:#0021a5; --ink:#142741; --muted:#4e6078;
+      --orange:#fa4616; --cream:#fbf8f3; --paper:#fff; --soft:#eef3fa;
+      --line:#d6deea; --sky:#e5edfc; --teal:#146a76; --green:#e8f4ed;
+      --shadow:0 20px 55px rgba(8,37,80,.10);
+      font-synthesis:none;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:98px}
+    body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.6 'DM Sans',Arial,sans-serif}
+    h1,h2,h3,p{margin-top:0}
+    h1,h2,.serif{font-family:'Libre Baskerville',Georgia,serif;letter-spacing:-.035em}
+    h1{font-size:clamp(2.65rem,5.4vw,5.2rem);line-height:1.13;font-weight:400}
+    h2{font-size:clamp(1.85rem,3.3vw,3.1rem);line-height:1.23;font-weight:400}
+    h3{line-height:1.25;font-size:1.25rem}
+    p{max-width:72ch}
+    a{color:inherit}
+    button{font:inherit;cursor:pointer}
+    button:focus-visible,a:focus-visible{outline:3px solid var(--orange);outline-offset:4px}
+    .wrap{width:min(1180px,calc(100% - 48px));margin-inline:auto}
+    .eyebrow{text-transform:uppercase;letter-spacing:.16em;font-size:.74rem;font-weight:700}
+    .muted{color:var(--muted)}
+    .skip{position:absolute;left:-10000px;z-index:300}
+    .skip:focus{left:16px;top:16px;background:white;padding:10px}
+    .banner{background:#fbe8dc;color:#653112;text-align:center;padding:9px 20px;font-size:.8rem;font-weight:700;letter-spacing:.025em}
+    .banner b{color:#9a370e}
+    header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
+    .header-in{min-height:76px;display:flex;justify-content:space-between;align-items:center;gap:20px}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--navy)}
+    .brand-mark{background:var(--blue);color:#fff;font-weight:700;font-size:.73rem;letter-spacing:.1em;padding:11px 10px}
+    .brand-name{font-size:.88rem;line-height:1.2;font-weight:700;max-width:230px}
+    nav{display:flex;align-items:center;gap:22px}
+    nav a{font-weight:700;font-size:.83rem;text-decoration:none;color:#394d67}
+    nav a:hover{color:var(--blue)}
+    nav .back{border:1px solid var(--line);padding:9px 13px;white-space:nowrap}
+    .hero{background:var(--paper);overflow:hidden}
+    .hero-grid{display:grid;grid-template-columns:1.08fr .92fr;min-height:630px}
+    .hero-copy{padding:clamp(56px,8vw,100px) 44px 75px 0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
+    .hero .eyebrow{color:var(--teal);margin-bottom:25px}
+    .hero h1{max-width:680px;color:var(--navy);margin-bottom:28px}
+    .hero h1 em{color:#cb4c20;font-weight:400}
+    .hero .lede{font-size:1.16rem;line-height:1.7;color:#485a71;max-width:555px;margin-bottom:30px}
+    .btn{display:inline-flex;justify-content:center;align-items:center;gap:12px;border:1px solid transparent;padding:15px 21px;text-decoration:none;font-size:.92rem;font-weight:700;transition:transform .15s ease,background .15s ease}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{color:#fff;background:var(--blue)}
+    .btn-primary:hover{background:var(--navy)}
+    .btn-outline{background:white;color:var(--navy);border-color:#98abc6}
+    .hero-note{font-size:.79rem;color:var(--muted);margin:25px 0 0}
+    .hero-art{position:relative;margin-right:calc((min(1180px, 100vw - 48px) - 100vw)/2);background:#082550;color:#fff;min-height:530px;isolation:isolate;overflow:hidden}
+    .hero-art:before{content:"";position:absolute;inset:-8%;background:radial-gradient(circle at 75% 28%,#246599 0,transparent 35%),radial-gradient(circle at 18% 82%,#154a76,transparent 40%);opacity:.55;z-index:-1}
+    .art-label{position:absolute;top:38px;left:42px;color:#b9cbe0}
+    .flow-graphic{width:100%;height:100%;min-height:565px;display:block}
+    .flow-graphic .thread{stroke:#b1cae7;stroke-width:2;fill:none;opacity:.58;stroke-dasharray:5 8}
+    .flow-graphic .thread.orange{stroke:#ff956d;opacity:.85}
+    .flow-graphic .orb{fill:#fff;stroke:#789ec5;stroke-width:1.5}
+    .flow-graphic .orb.accent{fill:#fa4616;stroke:#ffb9a0}
+    .flow-graphic .orb-text{fill:#fff;font:600 14px 'DM Sans',sans-serif;text-anchor:middle}
+    .flow-graphic .subtext{fill:#bdd0e5;font:400 11px 'DM Sans',sans-serif;text-anchor:middle}
+    .art-bottom{position:absolute;left:42px;bottom:37px;color:#d9e5f2;font:italic 1.14rem/1.5 'Libre Baskerville',Georgia,serif;max-width:260px}
+    section{padding:clamp(64px,8vw,112px) 0}
+    .intro{border-bottom:1px solid var(--line)}
+    .intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:55px;align-items:end}
+    .intro .eyebrow,.journey .eyebrow,.lenses .eyebrow,.evidence .eyebrow{color:var(--teal)}
+    .intro h2{color:var(--navy);max-width:580px;margin:17px 0 0}
+    .intro-desc{font-size:1.07rem;line-height:1.8;color:var(--muted);margin-bottom:4px}
+    .caveat{display:flex;align-items:flex-start;gap:13px;padding:17px 20px;background:#fff5ed;border-left:4px solid var(--orange);margin-top:32px;color:#6d442e;font-size:.88rem}
+    .caveat strong{color:#7a3511}
+    .caveat svg{width:23px;min-width:23px;margin-top:2px}
+    .journey{background:#fff}
+    .section-head{max-width:755px;margin-bottom:36px}
+    .section-head h2{color:var(--navy);margin:14px 0 15px}
+    .section-head p{color:var(--muted);font-size:1.04rem}
+    .journey-panel{display:grid;grid-template-columns:315px minmax(0,1fr);border:1px solid var(--line);box-shadow:var(--shadow);min-height:460px}
+    .journey-nav{padding:30px;background:#f0f5fc;border-right:1px solid var(--line)}
+    .journey-nav .eyebrow{color:#4b6685;margin-bottom:20px}
+    .step{display:flex;width:100%;align-items:center;gap:16px;text-align:left;padding:18px 12px;border:0;border-bottom:1px solid #cfdaeb;background:transparent;color:var(--ink);position:relative}
+    .step:hover{background:#e1eafb}
+    .step[aria-pressed="true"]{background:#fff;color:var(--navy);box-shadow:inset 4px 0 var(--orange)}
+    .step-no{width:38px;height:38px;border:1px solid #acbcd2;background:white;display:grid;place-items:center;flex-shrink:0;border-radius:50%;font-weight:700;font-size:.84rem;color:var(--blue)}
+    .step[aria-pressed="true"] .step-no{background:var(--orange);color:white;border-color:var(--orange)}
+    .step strong{display:block;font-size:.95rem}.step small{display:block;color:var(--muted);font-size:.76rem}
+    .journey-detail{padding:clamp(28px,4vw,55px);display:flex;flex-direction:column;justify-content:center;position:relative}
+    .stage-label{color:var(--teal);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700;margin-bottom:16px}
+    .stage-title{font-family:'Libre Baskerville',Georgia,serif;font-size:clamp(1.55rem,2.8vw,2.45rem);font-weight:400;color:var(--navy);line-height:1.3;max-width:620px}
+    .stage-description{font-size:1.06rem;color:#52657d;line-height:1.8;max-width:610px}
+    .stage-callout{background:var(--cream);padding:18px 20px;max-width:625px;border-left:3px solid var(--orange);margin-top:9px}
+    .stage-callout b{display:block;color:#a9421c;font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;margin-bottom:4px}
+    .stage-callout p{margin:0;font-size:.94rem;line-height:1.65}
+    .next-step{align-self:flex-start;margin-top:26px;background:transparent;color:var(--blue);border:0;border-bottom:2px solid var(--blue);padding:3px 0 6px;font-weight:700}
+    .lenses{background:#f5f7fc}
+    .lens-grid{display:grid;grid-template-columns:1fr 1.17fr;gap:35px;align-items:stretch}
+    .lens-intro{padding-top:8px}
+    .lens-intro h2{color:var(--navy);max-width:410px;margin:12px 0 22px}
+    .lens-intro p{color:var(--muted);line-height:1.8;max-width:420px}
+    .lens-list{display:flex;flex-direction:column;gap:10px;margin-top:28px;max-width:360px}
+    .lens-btn{display:flex;gap:15px;align-items:center;text-align:left;padding:15px 18px;border:1px solid #c4d1e3;background:white;color:var(--ink);font-weight:700}
+    .lens-btn:hover{border-color:var(--blue)}
+    .lens-btn[aria-pressed="true"]{border-color:var(--blue);box-shadow:inset 4px 0 var(--blue);background:#e9effe}
+    .lens-icon{font-size:1.35rem;line-height:1}
+    .lens-card{background:var(--navy);color:white;padding:clamp(28px,4vw,47px);min-height:525px;box-shadow:var(--shadow)}
+    .lens-card .label{display:inline-block;border:1px solid #84a3c6;color:#dbe7f5;padding:5px 10px;font-size:.72rem;text-transform:uppercase;letter-spacing:.09em}
+    .lens-card h3{font-family:'Libre Baskerville',Georgia,serif;font-size:clamp(1.8rem,2.5vw,2.65rem);line-height:1.3;font-weight:400;margin:26px 0}
+    .lens-card .prompt{margin-top:25px;border-top:1px solid #48658a;padding-top:20px}
+    .lens-card .prompt b{color:#ffa681;font-size:.77rem;text-transform:uppercase;letter-spacing:.11em}
+    .lens-card .prompt p{font-size:1rem;line-height:1.75;color:#e4edf8;margin:5px 0 0}
+    .lens-card .foot{border-top:1px solid #48658a;margin-top:28px;padding-top:18px;font-size:.78rem;color:#afc5df}
+    .shift{background:var(--navy);color:#fff;position:relative;overflow:hidden}
+    .shift:after{content:"";position:absolute;width:430px;height:430px;border:1px solid rgba(255,255,255,.1);border-radius:50%;right:-180px;top:-100px;box-shadow:0 0 0 70px rgba(255,255,255,.02),0 0 0 140px rgba(255,255,255,.02)}
+    .shift-in{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center}
+    .shift h2{color:#fff;max-width:700px;margin:12px 0 20px}
+    .shift p{color:#d1e0f1;font-size:1.05rem}
+    .shift .eyebrow{color:#ffa681}
+    .switch{padding:25px;background:#173b67;border:1px solid #6b8aab}
+    .switch .cap{font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:#f3b39e;font-weight:700}
+    .switch p{font-size:.96rem;margin:12px 0 0}
+    .switch button{width:100%;margin-top:22px;background:#fff;color:var(--navy);padding:15px 12px;border:0;font-weight:700}
+    .switch button:hover{background:#edf3ff}
+    .switch-result{margin-top:18px;padding:14px;background:#e9f7ee;color:#143f33;border-left:4px solid #65b188}
+    .switch-result[hidden]{display:none}
+    .evidence{background:#fff}
+    .evidence-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:60px;align-items:start}
+    .evidence h2{color:var(--navy);margin:16px 0}
+    .evidence .lede{color:var(--muted);font-size:1.04rem;line-height:1.8}
+    .proof{display:grid;gap:12px}
+    .proof-row{display:grid;grid-template-columns:46px 1fr;gap:15px;padding:22px;background:#f7f9fd;border:1px solid var(--line)}
+    .proof-icon{width:44px;height:44px;background:#dce6f6;color:var(--blue);display:grid;place-items:center;font-weight:700}
+    .proof h3{font-size:1rem;margin:0 0 7px}
+    .proof p{margin:0;font-size:.88rem;color:var(--muted)}
+    .tag{display:inline-block;font-size:.67rem;padding:3px 8px;text-transform:uppercase;letter-spacing:.06em;background:#e9eefd;color:#324f7d;margin-bottom:8px;font-weight:700}
+    .evidence-foot{font-size:.84rem;color:var(--muted);padding-top:18px;border-top:1px solid var(--line);margin-top:18px}
+    .closing{background:var(--cream);padding:68px 0}
+    .close-in{display:flex;align-items:center;justify-content:space-between;gap:28px}
+    .closing h2{font-size:clamp(1.6rem,2.8vw,2.6rem);color:var(--navy);margin:0 0 12px}
+    .closing p{color:var(--muted);margin:0}
+    footer{background:#0b2345;color:#b8c9df;padding:28px 0;font-size:.83rem}
+    footer .footer-in{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    footer strong{color:#fff}
+    @media(max-width:930px){
+      nav a:not(.back){display:none}
+      .hero-grid{grid-template-columns:1fr}
+      .hero-copy{padding:70px 0 55px}
+      .hero-art{margin:0 -24px;min-height:400px}
+      .flow-graphic{min-height:450px;max-height:490px}
+      .intro-grid,.lens-grid,.shift-in,.evidence-grid{grid-template-columns:1fr;gap:28px}
+      .journey-panel{grid-template-columns:1fr}
+      .journey-nav{border-right:none;border-bottom:1px solid var(--line)}
+      .journey-nav .eyebrow{margin-bottom:8px}
+      .step{width:33.333%;border:1px solid var(--line);padding:12px 7px}
+      .step small{display:none}
+      .step-no{width:29px;height:29px}
+      .journey-nav>div:last-child{display:flex;gap:4px}
+      .journey-detail{min-height:370px}
+      .lens-intro h2,.lens-intro p{max-width:700px}
+      .lens-list{flex-direction:row;max-width:none;flex-wrap:wrap}
+      .lens-btn{flex:1;min-width:145px}
+      .lens-card{min-height:0}
+    }
+    @media(max-width:560px){
+      .wrap{width:min(100% - 32px,1180px)}
+      .header-in{min-height:64px}
+      .brand-name{font-size:.73rem;max-width:148px}
+      .brand-mark{font-size:.61rem;padding:9px 7px}
+      nav .back{padding:7px;font-size:.75rem}
+      .hero-copy{padding:60px 0 45px}
+      .hero-art{margin:0 -16px}
+      .art-label{left:24px}
+      .art-bottom{left:24px}
+      section{padding:60px 0}
+      .journey-nav{padding:18px 14px}
+      .step{flex-direction:column;gap:5px;text-align:center;font-size:.8rem}
+      .journey-detail{padding:27px 21px;min-height:400px}
+      .stage-title{font-size:1.65rem}
+      .lens-btn{min-width:100%;padding:12px 15px}
+      .close-in{display:block}
+      .close-in .btn{margin-top:24px}
+    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto} .btn{transition:none}.btn:hover{transform:none}}
+    @media print{header,.banner,.hero-art,.btn,.lens-list,.next-step,.switch button{display:none!important} section{padding:22px 0} .journey-panel,.proof-row{box-shadow:none;break-inside:avoid} .hero-grid,.shift-in{display:block} .shift,.lens-card{background:white;color:black} .shift h2,.lens-card h3,.shift p,.lens-card .prompt p{color:black}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to main content</a>
+  <div class="banner"><b>DESIGN PROTOTYPE</b> · Fictional scenario for testing the experience · No research findings, quotations, or participant data</div>
+  <header>
+    <div class="wrap header-in">
+      <a class="brand" href="./index.html" aria-label="Return to First Look page">
+        <span class="brand-mark" aria-hidden="true">UF · L</span>
+        <span class="brand-name">Florida Education<br>Data Voices</span>
+      </a>
+      <nav aria-label="Page sections">
+        <a href="#experience">The experience</a>
+        <a href="#perspectives">Perspectives</a>
+        <a href="#evidence">Research integrity</a>
+        <a class="back" href="./index.html">← First Look</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">Florida Education Data Voices <span aria-hidden="true">/</span> Story prototype 01</div>
+          <h1 id="hero-title">One question.<br><em>Many perspectives.</em></h1>
+          <p class="lede">What happens between collecting education data and using it to support a student? Follow one hypothetical situation—then experience how the same moment looks different depending on where you stand.</p>
+          <a class="btn btn-primary" href="#experience">Explore the story <span aria-hidden="true">↗</span></a>
+          <p class="hero-note">A design exploration, not a summary of what Listening Tour participants said.</p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="eyebrow art-label">From information → understanding → action</div>
+          <svg class="flow-graphic" viewBox="0 0 510 570" preserveAspectRatio="xMidYMid meet">
+            <path class="thread" d="M78 156 Q260 160 256 288 T421 415"/>
+            <path class="thread" d="M78 156 Q114 275 256 288 T421 415"/>
+            <path class="thread orange" d="M78 156 Q305 70 256 288 T421 415"/>
+            <path class="thread" d="M110 418 Q160 370 256 288 T421 415"/>
+            <path class="thread" d="M110 418 Q140 190 256 288"/>
+            <circle cx="78" cy="156" r="52" fill="#144676" stroke="#6b9dc4"/>
+            <circle cx="256" cy="288" r="68" fill="#174f83" stroke="#6b9dc4"/>
+            <circle cx="421" cy="415" r="55" fill="#194b77" stroke="#ff956d" stroke-width="2.5"/>
+            <circle cx="110" cy="418" r="31" fill="#174f83" stroke="#6b9dc4"/>
+            <circle class="orb accent" cx="257" cy="288" r="7"/>
+            <circle class="orb" cx="78" cy="156" r="5"/>
+            <circle class="orb accent" cx="421" cy="415" r="7"/>
+            <text class="orb-text" x="78" y="130">Collect</text>
+            <text class="subtext" x="78" y="177">a signal</text>
+            <text class="orb-text" x="256" y="258">Make sense</text>
+            <text class="subtext" x="256" y="326">of context</text>
+            <text class="orb-text" x="421" y="390">Decide</text>
+            <text class="subtext" x="421" y="440">what helps</text>
+            <text class="subtext" x="110" y="424">Ask</text>
+          </svg>
+          <div class="art-bottom">One data point can travel through many hands.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="intro" aria-labelledby="intro-title">
+      <div class="wrap">
+        <div class="intro-grid">
+          <div><div class="eyebrow">Start with a situation</div><h2 id="intro-title">A school is trying to spot who needs help.</h2></div>
+          <p class="intro-desc">Imagine a school reviewing student literacy information to decide where additional support might be useful. The information exists—but before it can help, people must collect it, interpret it, and decide what to do. The same process looks different to a teacher, a district data specialist, and a family.</p>
+        </div>
+        <div class="caveat" role="note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 7v6m0 4v.1"/></svg>
+          <div><strong>This example is fictional.</strong> It is designed to test a storytelling interface. It does not represent a real participant, interview, quotation, documented pattern, or recommendation from the 2026–27 Listening Tour.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="journey" id="experience" aria-labelledby="journey-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">01 / Follow the journey</div>
+          <h2 id="journey-title">Before data can help, it has to move.</h2>
+          <p>Move through three moments. Each one illustrates a question our research may help us understand—not an answer we've already found.</p>
+        </div>
+        <div class="journey-panel">
+          <div class="journey-nav">
+            <div class="eyebrow">Choose a moment</div>
+            <div role="group" aria-label="Select step in the fictional data journey">
+              <button type="button" class="step" data-step="0" aria-pressed="true"><span class="step-no">01</span><span><strong>Collect</strong><small>The information exists</small></span></button>
+              <button type="button" class="step" data-step="1" aria-pressed="false"><span class="step-no">02</span><span><strong>Interpret</strong><small>Context creates meaning</small></span></button>
+              <button type="button" class="step" data-step="2" aria-pressed="false"><span class="step-no">03</span><span><strong>Act</strong><small>Decisions affect people</small></span></button>
+            </div>
+          </div>
+          <article class="journey-detail" aria-live="polite" aria-atomic="true">
+            <div class="stage-label" id="stage-label">Moment 01 / Collect</div>
+            <h3 class="stage-title" id="stage-title">The numbers are available. Are they easy to bring together?</h3>
+            <p class="stage-description" id="stage-desc">A team might look at assessment results, attendance, and classroom observations. These pieces of information can live in different places and arrive on different schedules.</p>
+            <div class="stage-callout"><b>Question to explore</b><p id="stage-question">What does it take for the right people to access the information they need?</p></div>
+            <button class="next-step" id="next-stage" type="button">Next: Interpret <span aria-hidden="true">→</span></button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="lenses" id="perspectives" aria-labelledby="lens-title">
+      <div class="wrap lens-grid">
+        <div class="lens-intro">
+          <div class="eyebrow">02 / Change your point of view</div>
+          <h2 id="lens-title">Same situation.<br>Different needs.</h2>
+          <p>Choose a perspective to explore what someone in that role <em>might</em> need from the information. These are hypothetical user journeys, not testimony or empirical comparisons.</p>
+          <div class="lens-list" role="group" aria-label="Select illustrative stakeholder perspective">
+            <button class="lens-btn" type="button" data-lens="teacher" aria-pressed="true"><span class="lens-icon" aria-hidden="true">✳</span> Teacher</button>
+            <button class="lens-btn" type="button" data-lens="data" aria-pressed="false"><span class="lens-icon" aria-hidden="true">▦</span> District data specialist</button>
+            <button class="lens-btn" type="button" data-lens="family" aria-pressed="false"><span class="lens-icon" aria-hidden="true">◇</span> Family member</button>
+          </div>
+        </div>
+        <article class="lens-card" aria-live="polite" aria-atomic="true">
+          <span class="label">Illustrative perspective · <span id="lens-role">Teacher</span></span>
+          <h3 id="lens-title-card">“What should I do differently tomorrow?”</h3>
+          <div class="prompt"><b>What they might need</b><p id="lens-need">A clear, timely view of where individual students need support, combined with classroom context.</p></div>
+          <div class="prompt"><b>A question worth researching</b><p id="lens-inquiry">How do educators bring information together with professional judgment?</p></div>
+          <p class="foot">No quotation is attributed to a real participant. This text is a hypothetical design example.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="shift" aria-labelledby="shift-title">
+      <div class="wrap shift-in">
+        <div>
+          <div class="eyebrow">03 / Imagine another path</div>
+          <h2 id="shift-title">What would make this easier?</h2>
+          <p>A research experience should help visitors move from an example to a productive question. We can explore possibilities without presenting them as findings or recommendations.</p>
+        </div>
+        <div class="switch">
+          <div class="cap">Design thought experiment</div>
+          <p>What if information were easier to locate, understand, and discuss across roles?</p>
+          <button type="button" id="toggle-path" aria-expanded="false" aria-controls="path-result">Explore a possible alternative <span aria-hidden="true">↗</span></button>
+          <div class="switch-result" id="path-result" hidden>
+            <strong>Possible alternative—not a recommendation</strong>
+            <p>Imagine a shared view that clearly identifies the source, timing, and meaning of each data point, while giving educators and families a way to ask questions. Would this make the decision more useful? What new concerns might it create?</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="evidence" id="evidence" aria-labelledby="evidence-title">
+      <div class="wrap evidence-grid">
+        <div>
+          <div class="eyebrow">04 / Follow the evidence</div>
+          <h2 id="evidence-title">The story opens the door. The research must support what follows.</h2>
+          <p class="lede">In the finished experience, visitors will be able to move from a real, approved story to its research context, relevant findings, differences across perspectives, and important limitations.</p>
+          <p class="evidence-foot"><strong>Our publishing rule:</strong> No illustrative scene, example, or model response may be mistaken for a Listening Tour finding. Actual evidence appears only after review and the necessary permissions.</p>
+        </div>
+        <div class="proof" aria-label="Planned evidence layers, not yet populated">
+          <div class="proof-row"><div class="proof-icon" aria-hidden="true">1</div><div><span class="tag">Future research content</span><h3>Approved participant experience</h3><p>A consent-cleared quotation, audio excerpt, or carefully documented vignette—with enough context to interpret it responsibly.</p></div></div>
+          <div class="proof-row"><div class="proof-icon" aria-hidden="true">2</div><div><span class="tag">Future research content</span><h3>Reviewed finding and variations</h3><p>A precise statement of what analysis supports, which audiences are represented, where perspectives differ, and what remains uncertain.</p></div></div>
+          <div class="proof-row"><div class="proof-icon" aria-hidden="true">3</div><div><span class="tag">Future research content</span><h3>Traceable sources and methods</h3><p>Reference identifiers, methodological notes, limitations, and links to the authoritative report or approved evidence.</p></div></div>
+        </div>
+      </div>
+    </section>
+    <section class="closing" aria-labelledby="closing-title">
+      <div class="wrap close-in">
+        <div><h2 id="closing-title">One rigorous body of evidence.<br>Many ways to experience it.</h2><p>Return to Claude's First Look layout to compare a research-brief approach with this interactive storytelling concept.</p></div>
+        <a class="btn btn-outline" href="./index.html">Compare with First Look <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="wrap footer-in"><div><strong>Florida Education Data Voices</strong> · Experience design prototype</div><div>Illustrative content only · Not a published research product · No participant data</div></div>
+  </footer>
+  <script>
+  (function(){
+    "use strict";
+    var stages = [
+      {label:"Moment 01 / Collect", title:"The numbers are available. Are they easy to bring together?", desc:"A team might look at assessment results, attendance, and classroom observations. These pieces of information can live in different places and arrive on different schedules.", question:"What does it take for the right people to access the information they need?"},
+      {label:"Moment 02 / Interpret", title:"A number needs context before it can tell a story.", desc:"A score alone may not explain why a student is struggling. Educators might consider changes over time, opportunities to learn, and what they know from the classroom.", question:"What helps people interpret information accurately and confidently?"},
+      {label:"Moment 03 / Act", title:"The important question is what happens next.", desc:"A school might use its understanding to adjust instruction or offer additional support. The decision still needs to be explained, revisited, and understood by the people affected.", question:"When does information lead to a useful decision—and for whom?"}
+    ];
+    var lenses = {
+      teacher:{role:"Teacher",title:"“What should I do differently tomorrow?”",need:"A clear, timely view of where individual students need support, combined with classroom context.",inquiry:"How do educators bring information together with professional judgment?"},
+      data:{role:"District data specialist",title:"“How do I make this information reliable and usable?”",need:"Consistent definitions, trustworthy pipelines, and clarity about who is authorized to access which records.",inquiry:"Where do data preparation and reporting workflows support—or slow down—decision-making?"},
+      family:{role:"Family member",title:"“What does this mean for my child?”",need:"An understandable explanation of what the information shows, what it does not show, and how to discuss possible next steps.",inquiry:"How do families receive, understand, and respond to information about learning?"}
+    };
+    var currentStep=0;
+    function renderStage(i){
+      currentStep=i;
+      var item=stages[i];
+      document.getElementById("stage-label").textContent=item.label;
+      document.getElementById("stage-title").textContent=item.title;
+      document.getElementById("stage-desc").textContent=item.desc;
+      document.getElementById("stage-question").textContent=item.question;
+      document.querySelectorAll(".step").forEach(function(btn){btn.setAttribute("aria-pressed",String(Number(btn.dataset.step)===i));});
+      document.getElementById("next-stage").textContent=i===2?"Return to: Collect →":"Next: "+(i===0?"Interpret":"Act")+" →";
+    }
+    document.querySelectorAll(".step").forEach(function(btn){
+      btn.addEventListener("click",function(){renderStage(Number(btn.dataset.step));});
+    });
+    document.getElementById("next-stage").addEventListener("click",function(){renderStage((currentStep+1)%stages.length);});
+    document.querySelectorAll(".lens-btn").forEach(function(btn){
+      btn.addEventListener("click",function(){
+        document.querySelectorAll(".lens-btn").forEach(function(b){b.setAttribute("aria-pressed",String(b===btn));});
+        var item=lenses[btn.dataset.lens];
+        document.getElementById("lens-role").textContent=item.role;
+        document.getElementById("lens-title-card").textContent=item.title;
+        document.getElementById("lens-need").textContent=item.need;
+        document.getElementById("lens-inquiry").textContent=item.inquiry;
+      });
+    });
+    document.getElementById("toggle-path").addEventListener("click",function(){
+      var result=document.getElementById("path-result");
+      var show=result.hidden;
+      result.hidden=!show;
+      this.setAttribute("aria-expanded",String(show));
+      this.textContent=show?"Hide this alternative ↑":"Explore a possible alternative ↗";
+    });
+  })();
+  </script>
+</body>
+</html>
